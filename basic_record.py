@@ -2,7 +2,7 @@ import time
 import datetime
 
 # camid should define the camera id text string
-from .camid import camID
+from camid import camID
 
 from picamera2 import Picamera2
 from picamera2.encoders import H264Encoder
@@ -39,15 +39,15 @@ while True:
     res = input("[1, 2, 3]+Enter to select a time: ")
     if res == '1':
         print("\nStart time  set to:", start_time_1_text)
-        output = start_time_1_text+camID+".mp4"
+        output = start_time_1_text+"_"+camID+".mp4"
         start_time = start_time_1
     elif res == '2':
         print("\nStart time  set to:", start_time_2_text)
-        output = start_time_2_text+camID+".mp4"
+        output = start_time_2_text+"_"+camID+".mp4"
         start_time = start_time_2
     elif res == '3':
         print("\nStart time set to:", start_time_3_text)
-        output = start_time_3_text+camID+".mp4"
+        output = start_time_3_text+"_"+camID+".mp4"
         start_time = start_time_3
     else:
         print("\nNo time selected exit without recording.\n")
