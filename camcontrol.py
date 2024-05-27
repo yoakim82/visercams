@@ -1,27 +1,80 @@
+from camid import camID
+import mqtt
 
+#from picamera2 import Picamera2
+#from picamera2.encoders import H264Encoder, Quality
+#from picamera2.outputs import FfmpegOutput, FileOutput
+from dummycamera import DummyCam, DummyEnc, FfmpegOutput
+import time
+import datetime
+
+
+def setup_mqtt(broker):
+    mq = mqtt.MqttInterface(broker_address=broker, port=1883, username=camID, password=camID)
+
+
+    global runFlag
+    runFlag = False
+    if mq.connect():
+        if mq.startLoop():
+            print("MQTT connection established.")
+
+    return mq
+
+
+def setup_camera(device="picam2", width=1920, height=1080, bps=10000000):
+
+    print("Record Video")
+
+    if device=="picam2":
+
+        # Picamera2 setup
+        picam2 = Picamera2()
+        video_config = picam2.create_video_configuration(main={"size": (width, height)})
+        picam2.configure(video_config)
+        encoder = H264Encoder(bitrate=bps)
+
+        return picam2, encoder
+    else:
+        cam = DummyCam()
+        enc = DummyEnc()
+        return cam, enc
+
+def get_timestamp():
+    now = datetime.datetime.now()
+    start_time = now
+    format_str = "%Y-%m-%d_%H_%M_%S"
+    nowtext = now.strftime(format_str)
+    output = nowtext
+    return output
+
+
+def main(mq, cam, encoder):
+
+    while mq.listen:
+        while not mq.activeCapture and mq.listen:
+            time.sleep(0.1) # wait for ON signal to arrive
+
+        ts = get_timestamp()
+
+        output = f"{ts}_{camID}.mp4"
+
+        cam.start_recording(encoder, FfmpegOutput(output))
+        print(f"Starting recording at {ts}")
+        while mq.activeCapture and mq.listen:
+            time.sleep(0.1) # wait for OFF signal to arrive
+        end_time = get_timestamp()
+        cam.stop_recording()
+        print(f"Stopping recording at {end_time}")
 
 if __name__ == '__main__':
-    mq = setup_mqtt()
+    mq = setup_mqtt(broker="localhost")
 
 
     # Camera intrinsics
     width = 1920  # Replace with your image width in pixels
     height = 1080  # Replace with your image height in pixels
     fov_degrees = 90.0  # Replace with your desired FOV in degrees
-    crop_w = 400
-    crop_h = 400
 
-    sensor_transforms = [
-        carla.Transform(carla.Location(x=-20, y=0.0, z=20.4), carla.Rotation(yaw=45.0, pitch=0.0, roll=0.0)),
-        carla.Transform(carla.Location(x=-24, y=26, z=20.4), carla.Rotation(yaw=0.0, pitch=-5.0, roll=0.0)),
-        carla.Transform(carla.Location(x=23, y=28.6, z=20.4), carla.Rotation(yaw=180.0, pitch=-5.0, roll=0.0))
-    ]
-
-    #crops_que = [ImageQueue(max_size=4) for _ in range(len(sensor_transforms))]
-    rgb_data = {f'rgb_image_{i + 1:02}': np.zeros((height, width, 4)) for i in range(len(sensor_transforms))}
-    crop_data = {f'rgb_image_{i + 1:02}': np.zeros((crop_h, crop_w, 3)) for i in range(len(sensor_transforms))}
-    crops_que = {f'rgb_image_{i + 1:02}': ImageQueue(max_size=100, name=f'crop_{i + 1:02}') for i in range(len(sensor_transforms))}
-
-
-    setup_flask(rgb_data, crop_data, crop_w, crop_h, crops_que)
-    main(mq, rgb_data, crop_data, crops_que, sensor_transforms, width, height, fov_degrees, crop_w, crop_h)
+    cam, enc = setup_camera(device="test", width=width, height=height, bps=10000000)
+    main(mq, cam, enc)
