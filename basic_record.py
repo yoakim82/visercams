@@ -23,15 +23,17 @@ while True:
     # some "UI" to help you start the camera at the same time
     now = datetime.datetime.now()
     start_time = now
-    nowtext = now.strftime("%Y-%m-%d_%H:%M:%S")
+    format_str = "%Y-%m-%d_%H_%M_%S"
+    nowtext = now.strftime(format_str)
     output = nowtext
     delay = 20-(now.second % 10)
+
     start_time_1 = (now + datetime.timedelta(seconds=delay)).replace(microsecond=0)
-    start_time_1_text = start_time_1.strftime("%Y-%m-%d_%H:%M:%S")
+    start_time_1_text = start_time_1.strftime(format_str)
     start_time_2 = (now + datetime.timedelta(seconds=delay+10)).replace(microsecond=0)
-    start_time_2_text = start_time_2.strftime("%Y-%m-%d_%H:%M:%S")
+    start_time_2_text = start_time_2.strftime(format_str)
     start_time_3 = (now + datetime.timedelta(seconds=delay+20)).replace(microsecond=0)
-    start_time_3_text = start_time_3.strftime("%Y-%m-%d_%H:%M:%S")
+    start_time_3_text = start_time_3.strftime(format_str)
     print("\n\nCurent time:", nowtext)
     print("1:", start_time_1_text)
     print("2:", start_time_2_text)
