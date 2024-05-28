@@ -72,7 +72,7 @@ class MqttInterface:
         self.client.on_disconnect = on_disconnect
         self.client.on_message = on_message
         # if username != 'user' and password != 'ssch':
-        self.client.username_pw_set(username=username, password=password)
+        #self.client.username_pw_set(username=username, password=password)
 
         self.activeCameras = []
         self.listen = True

@@ -11,7 +11,7 @@ import datetime
 
 def setup_mqtt(broker):
     print(f"Connecting to broker with id {camID}")
-    mq = mqtt.MqttInterface(broker_address=broker, port=1883, username=camID, password=camID)
+    mq = mqtt.MqttInterface(broker_address=broker, port=1883, username=camID, password=camID, client_name=camID)
 
 
     global runFlag
