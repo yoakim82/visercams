@@ -68,7 +68,7 @@ def main(mq, cam, encoder):
         print(f"Stopping recording at {end_time}")
 
 if __name__ == '__main__':
-    mq = setup_mqtt(broker="localhost")
+    mq = setup_mqtt(broker="10.44.169.50") # Jocke's lenovo machine
 
 
     # Camera intrinsics
