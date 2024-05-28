@@ -7,7 +7,7 @@ StartLimitIntervalSec=0
 Type=simple
 Restart=always
 RestartSec=1
-User=pi
+User=viser
 WorkingDirectory=/home/viser/visercams
 ExecStart=/home/bin/python /home/viser/visercams/camcontrol.py
 
