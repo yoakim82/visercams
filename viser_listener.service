@@ -1,0 +1,15 @@
+[Unit]
+Description=VISER camera mqtt listener service
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=pi
+WorkingDirectory=/home/viser/visercams
+ExecStart=/home/bin/python /home/viser/visercams/camcontrol.py
+
+[Install]
+WantedBy=multi-user.target
