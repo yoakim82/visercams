@@ -1,10 +1,10 @@
 from camid import camID
 import mqtt
 
-#from picamera2 import Picamera2
-#from picamera2.encoders import H264Encoder, Quality
-#from picamera2.outputs import FfmpegOutput, FileOutput
-from dummycamera import DummyCam, DummyEnc, FfmpegOutput
+from picamera2 import Picamera2
+from picamera2.encoders import H264Encoder, Quality
+from picamera2.outputs import FfmpegOutput, FileOutput
+#from dummycamera import DummyCam, DummyEnc, FfmpegOutput
 import time
 import datetime
 
