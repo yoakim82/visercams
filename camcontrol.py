@@ -76,5 +76,5 @@ if __name__ == '__main__':
     height = 1080  # Replace with your image height in pixels
     fov_degrees = 90.0  # Replace with your desired FOV in degrees
 
-    cam, enc = setup_camera(device="test", width=width, height=height, bps=10000000)
+    cam, enc = setup_camera(device="picam2", width=width, height=height, bps=10000000)
     main(mq, cam, enc)
