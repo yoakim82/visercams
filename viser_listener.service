@@ -9,7 +9,7 @@ Restart=always
 RestartSec=1
 User=viser
 WorkingDirectory=/home/viser/visercams
-ExecStart=/home/bin/python /home/viser/visercams/camcontrol.py
+ExecStart=/usr/bin/python /home/viser/visercams/camcontrol.py
 
 [Install]
 WantedBy=multi-user.target
